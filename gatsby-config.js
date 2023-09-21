@@ -1,17 +1,23 @@
-/**
- * @type {import('gatsby').GatsbyConfig}
- */
+const dotenv = require("dotenv");
+const validEnvironments = new Set(["dev", "nprd", "prd"]);
+const path =
+  process.env.ENVIRONMENT && validEnvironments.has(process.env.ENVIRONMENT)
+    ? `.env.${process.env.ENVIRONMENT}`
+    : ".env.dev";
+
+dotenv.config({ path });
+
 module.exports = {
-  siteMetadata: {
-    title: `gatsby-sample-app`,
-    siteUrl: `https://www.yourdomain.tld`
-  },
-  plugins: ["gatsby-plugin-sass", "gatsby-plugin-image", "gatsby-plugin-sharp", "gatsby-transformer-sharp", {
-    resolve: 'gatsby-source-filesystem',
-    options: {
-      "name": "images",
-      "path": "./src/images/"
-    },
-    __key: "images"
-  }]
+  plugins: [
+    "gatsby-plugin-react-helmet",
+    "gatsby-plugin-sass",
+    "emotion",
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        path: `${__dirname}/src/pages`,
+        name: "pages"
+      }
+    }
+  ]
 };
